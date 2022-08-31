@@ -1,6 +1,7 @@
 # Choice Maker Web App
 
 ## This web app helps you make choices by picking one option out of many. 
+### Link to live site: https://choice-maker-web-app.netlify.app/
 
 ## Tech stack: 
 - `React.js` 
