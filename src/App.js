@@ -12,9 +12,11 @@ function App() {
   const [index, setIndex] = useState(1);
   const [answer, setAnswer] = useState("");
 
+  const [questionInput, setQuestionInput] = useState(true);
+  const [optionInput, setOptionInput] = useState(true);
+
   let mainQuestion = document.getElementById("mainQuestion");
   let allOptions = document.getElementById("allOptions");
-  let questionInput = document.getElementById("questionInput");
 
   //function to append question
   function addQuestion() {
@@ -23,7 +25,7 @@ function App() {
     } else {
       mainQuestion.innerText = `${question}`;
       setQuestion("");
-      questionInput.classList.add("hidden");
+      setQuestionInput(false);
       mainQuestionArray.push(question);
       console.log(mainQuestionArray);
     }
@@ -63,10 +65,12 @@ function App() {
     if (mainQuestion.innerText === "") {
       alert("Please input a question");
     } else {
-      setChooseBTN(true)
+      setChooseBTN(true);
       setResultDiv(true);
       setAnswer(`${random_item(questionsArray)}`);
       checkQuestionOccurence(mainQuestionArray, mainQuestion.innerText);
+      setChooseBTN(false);
+      setOptionInput(false);
     }
   }
 
@@ -74,46 +78,53 @@ function App() {
     allOptions.innerHTML = "";
     mainQuestion.innerText = "";
     setIndex(1);
-    questionInput.classList.remove("hidden");
+    setQuestionInput(true);
     setResultDiv(false);
     setQuestionsArray([]);
+    setOptionInput(true);
     console.log(questionsArray);
   }
   return (
     <div className="App bg-gray-900 text-white">
-      <div className="bg-gray-700 mx-4 p-2 mt-4 sticky md:bg-gray-900">
-        <div id="questionInput" className="flex flex-row justify-center">
-          <input
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder="Enter Question"
-            type="text"
-            className="appearance-none block w-60 bg-gray-100 rounded-sm py-1 leading-tight border text-black focus:outline-none focus:bg-blue-100 focus:border-gray-900 md:w-6/12 md:h-10"
-          />
-          <button
-            onClick={addQuestion}
-            className="bg-blue-200 text-black px-2 rounded ml-2"
-          >
-            +
-          </button>
-        </div>
+      <div className="bg-gray-700 mx-4 p-2 mt-4 sticky rounded md:bg-gray-900">
+        
+        {questionInput && (
+          <div className="flex flex-row justify-center mt-4">
+            <input
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="Enter Question"
+              type="text"
+              className="appearance-none block w-60 bg-gray-100 rounded-sm py-1 leading-tight border text-black focus:outline-none focus:bg-blue-100 focus:border-gray-900 md:w-6/12 md:h-10"
+            />
+            <button
+              onClick={addQuestion}
+              className="bg-blue-200 text-black px-2 rounded ml-2 font-bold"
+            >
+              +
+            </button>
+          </div>
+        )}
 
-        <div id="optionInput" className="mt-4 flex flex-row justify-center">
-          <input
-            value={option}
-            onChange={(e) => setOption(e.target.value)}
-            placeholder="Enter Option"
-            type="text"
-            className="appearance-none block w-60 bg-gray-100 rounded-sm py-1 leading-tight border text-black focus:outline-none focus:bg-blue-100 focus:border-gray-900 md:w-6/12 md:h-10"
-          />
+        {optionInput && (
+          <div className="mt-4 flex flex-row justify-center">
+            <input
+              value={option}
+              onChange={(e) => setOption(e.target.value)}
+              placeholder="Enter Option"
+              type="text"
+              className="appearance-none block w-60 bg-gray-100 rounded-sm py-1 leading-tight border text-black focus:outline-none focus:bg-blue-100 focus:border-gray-900 md:w-6/12 md:h-10"
+            />
 
-          <button
-            onClick={addOptions}
-            className="bg-blue-200 text-black px-2 rounded ml-2"
-          >
-            +
-          </button>
-        </div>
+            <button
+              onClick={addOptions}
+              className="bg-blue-200 text-black px-2 rounded ml-2 font-bold"
+            >
+              +
+            </button>
+          </div>
+        )}
+
         <div className="flex flex-col justify-center items-center">
           <h1 id="mainQuestion" className="font-bold text-3xl md:text-5xl"></h1>
 
@@ -130,6 +141,7 @@ function App() {
             </button>
           )}
         </div>
+
       </div>
 
       {resultDiv && (
@@ -154,6 +166,7 @@ function App() {
           </div>
         </div>
       )}
+
     </div>
   );
 }
